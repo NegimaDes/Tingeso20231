@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class proveedorEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
     private String nombre;

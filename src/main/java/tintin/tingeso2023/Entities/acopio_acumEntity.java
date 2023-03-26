@@ -10,8 +10,8 @@ import java.util.Date;
 @Entity
 @Table(name = "acopio_acum")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class acopio_acumEntity {
 
     @Id
