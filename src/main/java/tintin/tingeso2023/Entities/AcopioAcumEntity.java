@@ -5,22 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "acopio_acum")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class acopio_acumEntity {
+public class AcopioAcumEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_acopio_acum;
 
     @ManyToOne
-    @JoinColumn(name="codigo")
-    private proveedorEntity codigo;
+    @JoinColumn(name = "codigo")
+    private ProveedorEntity codigo;
 
     private Integer total_kls;
 
@@ -28,5 +27,9 @@ public class acopio_acumEntity {
 
     private Integer tarde;
 
-    private Date fecha;
+    private Integer anno;
+
+    private Integer mes;
+
+    private Integer quincena;
 }

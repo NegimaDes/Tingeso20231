@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class pagoEntity {
+public class PagoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class pagoEntity {
 
     @OneToOne
     @JoinColumn(name = "id_acopio_acum")
-    private acopio_acumEntity acopio;
+    private AcopioAcumEntity acopio;
 
     private Integer total;
 

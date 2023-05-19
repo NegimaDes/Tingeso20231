@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class proveedorEntity {
+public class ProveedorEntity {
 
     @Id
     private Integer codigo;

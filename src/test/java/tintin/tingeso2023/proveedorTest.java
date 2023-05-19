@@ -3,8 +3,8 @@ package tintin.tingeso2023;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import tintin.tingeso2023.Entities.proveedorEntity;
-import tintin.tingeso2023.Services.proveedorService;
+import tintin.tingeso2023.Entities.ProveedorEntity;
+import tintin.tingeso2023.Services.ProveedorService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class proveedorTest {
 
     @Autowired
-    proveedorService serv;
+    ProveedorService serv;
 
     @Test
     void testsave1(){
-        proveedorEntity temp = new proveedorEntity();
+        ProveedorEntity temp = new ProveedorEntity();
         temp.setCategoria("A");
         temp.setCodigo(1001);
         temp.setNombre("Nombre");
@@ -30,7 +30,7 @@ class proveedorTest {
     }
     @Test
     void testposible(){
-        proveedorEntity temp = new proveedorEntity();
+        ProveedorEntity temp = new ProveedorEntity();
         temp.setCategoria("A");
         temp.setCodigo(1001);
         temp.setNombre("Nombre");
@@ -38,7 +38,7 @@ class proveedorTest {
 
         serv.save(temp);
 
-        boolean posible = serv.codigo_correcto(1001);
+        boolean posible = serv.codigoCorrecto(1001);
 
         assertFalse(posible);
 
@@ -46,7 +46,7 @@ class proveedorTest {
     }
     @Test
     void testnext_code(){
-        proveedorEntity temp = new proveedorEntity();
+        ProveedorEntity temp = new ProveedorEntity();
         temp.setCategoria("A");
         temp.setCodigo(1001);
         temp.setNombre("Nombre");
@@ -54,7 +54,7 @@ class proveedorTest {
 
         serv.save(temp);
 
-        proveedorEntity temp2 = new proveedorEntity();
+        ProveedorEntity temp2 = new ProveedorEntity();
         temp2.setCategoria("A");
         temp2.setCodigo(2001);
         temp2.setNombre("Nombre");
@@ -62,7 +62,7 @@ class proveedorTest {
 
         serv.save(temp2);
 
-        Integer codigo = serv.next_code(1000);
+        Integer codigo = serv.nextCode(1000);
 
         assertEquals(1002, codigo);
 
@@ -71,7 +71,7 @@ class proveedorTest {
     }
     @Test
     void testobtener(){
-        proveedorEntity temp = new proveedorEntity();
+        ProveedorEntity temp = new ProveedorEntity();
         temp.setCategoria("A");
         temp.setCodigo(1001);
         temp.setNombre("Nombre");
@@ -79,7 +79,7 @@ class proveedorTest {
 
         serv.save(temp);
 
-        Integer codigo = serv.obtener_proveedor(1001).getCodigo();
+        Integer codigo = serv.obtenerProveedor(1001).getCodigo();
 
         assertEquals(1001,codigo);
 

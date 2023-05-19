@@ -2,8 +2,8 @@ package tintin.tingeso2023.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import tintin.tingeso2023.Entities.acopio_acumEntity;
+import tintin.tingeso2023.Entities.CalidadEntity;
 
 @Repository
-public interface acopio_acumRepository extends CrudRepository<acopio_acumEntity, Integer> {
+public interface CalidadRepository extends CrudRepository<CalidadEntity, Integer> {
 }
