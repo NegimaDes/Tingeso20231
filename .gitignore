@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+/sonarqube-10.0.0.68432/
+src/main/resources/application.properties
+src/main/resources/application.properties
+src/main/resources/application.properties

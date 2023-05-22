@@ -8,12 +8,10 @@ import tintin.tingeso2023.Entities.ProveedorEntity;
 import tintin.tingeso2023.Repositories.AcopioAcumRepository;
 import tintin.tingeso2023.Repositories.ProveedorRepository;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
+
+import static org.thymeleaf.util.StringUtils.length;
 
 @Service
 public class AcopioService {
@@ -63,7 +61,7 @@ public class AcopioService {
     }
 
     public AcopioAcumEntity addTurno(AcopioAcumEntity editar, String turno){
-        if(turno == "M"){
+        if(Objects.equals(turno, "M")){
             editar.setManana(editar.getManana() + 1);
         }else{
             editar.setTarde(editar.getTarde() + 1);
@@ -85,7 +83,7 @@ public class AcopioService {
         Iterable<AcopioAcumEntity> all = repo.findAll();
         List<AcopioAcumEntity> coincidencias = new LinkedList<>();
         for(AcopioAcumEntity temp : all){
-            if(temp.getCodigo().getCodigo() == codigo){
+            if(Objects.equals(temp.getCodigo().getCodigo(), codigo)){
                 coincidencias.add(temp);
             }
         }
@@ -93,7 +91,7 @@ public class AcopioService {
     }
 
     public boolean confirmar(AcopioAcumEntity acopio, Integer anno, Integer mes, Integer quincena){
-        return acopio.getAnno() == anno && acopio.getMes() == mes && acopio.getQuincena() == quincena;
+        return Objects.equals(acopio.getAnno(), anno) && Objects.equals(acopio.getMes(), mes) && Objects.equals(acopio.getQuincena(), quincena);
     }
 
     public Integer[] readDoc(MultipartFile doc){
@@ -103,10 +101,11 @@ public class AcopioService {
         try{
             InputStream is = doc.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
-            line = br.readLine();
+            br.readLine();
             while ((line = br.readLine()) != null){
                 fecha = readLine(line);
             }
+            is.close();
         } catch(IOException e){
             System.err.println(e.getMessage());
         }
@@ -127,11 +126,43 @@ public class AcopioService {
     }
 
     public Integer[] getListDate(String fecha){
-        //System.out.println(fecha);
         String[] arr = fecha.split("/");
         int anno = Integer.parseInt(arr[2]);
         int mes = Integer.parseInt(arr[0]);
         int dia = Integer.parseInt(arr[1]);
         return new Integer[]{mes, dia, anno};
+    }
+
+    public List<AcopioAcumEntity> sinPagos(Integer[] fecha){
+        Iterable<AcopioAcumEntity> all = repo.findAll();
+        List<AcopioAcumEntity> porpagar = new ArrayList<>();
+        for(AcopioAcumEntity actual: all){
+            if(confirmar(actual, fecha[0], fecha[1], fecha[2])){
+                porpagar.add(actual);
+            }
+        }
+        return porpagar;
+    }
+
+    public AcopioAcumEntity getPrevio(AcopioAcumEntity actual){
+        Iterable<AcopioAcumEntity> all = repo.findAll();
+        for(AcopioAcumEntity previo:all){
+            if(Objects.equals(actual.getCodigo().getCodigo(), previo.getCodigo().getCodigo())){
+                if(esPrevio(actual, previo)){
+                    return previo;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean esPrevio(AcopioAcumEntity actual, AcopioAcumEntity previo){
+        if(actual.getQuincena() == 1){
+            if(actual.getMes() == 1){
+                return confirmar(previo, actual.getAnno()-1, 12, 2);
+            }
+            return confirmar(previo, actual.getAnno(), actual.getMes()-1, 2);
+        }
+        return confirmar(previo, actual.getAnno(), actual.getMes(), 1);
     }
 }

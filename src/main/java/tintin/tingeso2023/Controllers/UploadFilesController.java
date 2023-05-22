@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import tintin.tingeso2023.Services.AcopioService;
 import tintin.tingeso2023.Services.CalidadService;
+import tintin.tingeso2023.Services.PagoService;
 
 @Controller
 @RequestMapping
@@ -20,6 +21,9 @@ public class UploadFilesController {
     @Autowired
     CalidadService caliserv;
 
+    @Autowired
+    PagoService pagoserv;
+
     @GetMapping("/subir_data")
     public String interfaz(){
         return "upload_files";
@@ -30,6 +34,7 @@ public class UploadFilesController {
         Integer[] fecha;
         fecha = acopserv.readDoc(doc1);
         caliserv.readDoc(doc2, fecha);
+        pagoserv.calcularPagos(fecha);
         return "main";
     }
 }

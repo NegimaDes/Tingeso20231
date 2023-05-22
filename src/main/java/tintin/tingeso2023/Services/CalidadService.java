@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Service
 public class CalidadService {
@@ -35,22 +37,25 @@ public class CalidadService {
     }
 
     public void saveHandler(Integer codigo, Integer grasa, Integer solidos, Integer[] fecha){
-        AcopioAcumEntity acopio = servacop.findAcopio(codigo, fecha[2], fecha[1], fecha[0]);
+        AcopioAcumEntity acopio = servacop.findAcopio(codigo, fecha[0], fecha[1], fecha[2]);
         if(acopio != null){
             createAndSave(acopio, grasa, solidos);
         }
     }
 
     public void readDoc(MultipartFile doc, Integer[] fecha){
+        System.out.println("Se comienza a leer calidad, fecha: " + Arrays.toString(fecha));
         String line;
         BufferedReader br;
         try{
             InputStream is = doc.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
-            line = br.readLine();
+            br.readLine();
             while ((line = br.readLine()) != null){
+                System.out.println("linea leida: " + line);
                 readLine(line, fecha);
             }
+            is.close();
         } catch(IOException e){
             System.err.println(e.getMessage());
         }
@@ -62,5 +67,15 @@ public class CalidadService {
         Integer grasa = Integer.parseInt(arr[1]);
         Integer solidos = Integer.parseInt(arr[2]);
         saveHandler(codigo, grasa, solidos, fecha);
+    }
+
+    public CalidadEntity getCalidad(Integer idacopio){
+        Iterable<CalidadEntity> all = repo.findAll();
+        for(CalidadEntity revisando:all){
+            if(Objects.equals(revisando.getAcopio().getId_acopio_acum(), idacopio)){
+                return revisando;
+            }
+        }
+        return null;
     }
 }

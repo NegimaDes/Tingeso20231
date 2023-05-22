@@ -84,4 +84,12 @@ public class ProveedorService {
     public ProveedorEntity obtenerProveedor(Integer codigo){
         return repo.findById(codigo).orElse(null);
     }
+
+    public void retencion(Integer codigo, boolean confirmador){
+        ProveedorEntity proveedor = repo.findById(codigo).orElse(null);
+        if(proveedor != null){
+            proveedor.setRetencion(confirmador);
+            save(proveedor);
+        }
+    }
 }

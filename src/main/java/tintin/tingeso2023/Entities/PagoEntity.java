@@ -21,6 +21,28 @@ public class PagoEntity {
     @JoinColumn(name = "id_acopio_acum")
     private AcopioAcumEntity acopio;
 
+    private Integer varl;
+
+    private Integer varg;
+
+    private Integer vars;
+
+    private Integer pleche;
+
+    private Integer pgrasa;
+
+    private Integer psolidos;
+
+    private Integer bonificacion;
+
+    private Integer dvarl;
+
+    private Integer dvarg;
+
+    private Integer dvars;
+
+    private Integer retencion;
+
     private Integer total;
 
     private Integer v_final;
