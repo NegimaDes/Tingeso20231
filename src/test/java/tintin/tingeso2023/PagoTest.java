@@ -14,7 +14,7 @@ import tintin.tingeso2023.services.ProveedorService;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class PagoTest {
+class PagoTest {
     @Autowired
     PagoService serv;
 
@@ -139,7 +139,7 @@ public class PagoTest {
         temp2.setSolido(4);
         CalidadEntity calidad = cserv.save(temp2);
 
-        Integer grasa = serv.getPagoGrasa(acopio);
+        Integer grasa = serv.getPagoSolidos(acopio);
 
         assertEquals(-130, grasa);
 
@@ -157,7 +157,7 @@ public class PagoTest {
         temp2.setSolido(10);
         CalidadEntity calidad = cserv.save(temp2);
 
-        Integer grasa = serv.getPagoGrasa(acopio);
+        Integer grasa = serv.getPagoSolidos(acopio);
 
         assertEquals(-90, grasa);
 
@@ -175,7 +175,7 @@ public class PagoTest {
         temp2.setSolido(20);
         CalidadEntity calidad = cserv.save(temp2);
 
-        Integer grasa = serv.getPagoGrasa(acopio);
+        Integer grasa = serv.getPagoSolidos(acopio);
 
         assertEquals(95, grasa);
 
@@ -193,7 +193,7 @@ public class PagoTest {
         temp2.setSolido(50);
         CalidadEntity calidad = cserv.save(temp2);
 
-        Integer grasa = serv.getPagoGrasa(acopio);
+        Integer grasa = serv.getPagoSolidos(acopio);
 
         assertEquals(150, grasa);
 
@@ -262,7 +262,8 @@ public class PagoTest {
 
         CalidadEntity calidad = cserv.saveHandler(20001, 15, 15, fecha);
 
-        PagoEntity pago =  serv.calcularPagos(fecha);
+        AcopioAcumEntity acopio = aserv.findAcopio(20001, fecha[0], fecha[1], fecha[2]);
+        PagoEntity pago =  serv.datos(acopio);
 
         assertNotEquals(null, pago);
 
@@ -270,5 +271,43 @@ public class PagoTest {
         cserv.delete(calidad);
         aserv.delete(temp2);
         pserv.delete(20001);
+    }
+
+    @Test
+    void testPreSave(){
+        ProveedorEntity proveedor = new ProveedorEntity();
+        proveedor.setCodigo(20001);
+        pserv.save(proveedor);
+
+        AcopioAcumEntity acopio = new AcopioAcumEntity();
+        acopio.setCodigo(proveedor);
+        aserv.save(acopio);
+
+        PagoEntity pago = new PagoEntity();
+        pago.setTotal(1000000);
+        pago.setAcopio(acopio);
+
+        PagoEntity pago2 =  serv.preSave(pago);
+
+        assertNotEquals(0, pago2.getRetencion());
+
+        serv.delete(pago2);
+        aserv.delete(acopio);
+        pserv.delete(20001);
+    }
+
+    @Test
+    void testQuincenaToString(){
+        AcopioAcumEntity acopio = new AcopioAcumEntity();
+        acopio.setQuincena(2);
+        acopio.setMes(5);
+        acopio.setAnno(2023);
+
+        PagoEntity pago = new PagoEntity();
+        pago.setAcopio(acopio);
+
+        String quincena = serv.quincenaToString(pago);
+
+        assertEquals("2023/5/2", quincena);
     }
 }

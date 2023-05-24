@@ -84,12 +84,12 @@ public class PagoService {
         return preSave(pago);
     }
 
-    public PagoEntity calcularPagos(Integer[] fecha){
+    @Generated
+    public void calcularPagos(Integer[] fecha){
         List<AcopioAcumEntity> porpagar = acoserv.sinPagos(fecha);
         for(AcopioAcumEntity calculando:porpagar){
-            return datos(calculando);
+            datos(calculando);
         }
-        return null;
     }
 
     public PagoEntity datos(AcopioAcumEntity calculando){
@@ -160,7 +160,7 @@ public class PagoService {
         if(previo == null){
             return 0;
         }
-        float relacion = ((float) (acopio.getTotalkls()/previo.getTotalkls()))*100;
+        float relacion = ((float) (acopio.getTotalkls())/(float) (previo.getTotalkls()))*100;
         return (int) (100 - relacion);
     }
 
@@ -185,7 +185,7 @@ public class PagoService {
         }
         Integer id1 = previo.getIdacopio();
         Integer id2 = acopio.getIdacopio();
-        float relacion = ((float) (calserv.getCalidad(id2).getGrasa()/calserv.getCalidad(id1).getGrasa()))*100;
+        float relacion = ((float) (calserv.getCalidad(id2).getGrasa())/(float) (calserv.getCalidad(id1).getGrasa()))*100;
         return (int) (100 - relacion);
     }
 
@@ -210,7 +210,7 @@ public class PagoService {
         }
         Integer id1 = previo.getIdacopio();
         Integer id2 = acopio.getIdacopio();
-        float relacion = ((float) (calserv.getCalidad(id2).getSolido()/calserv.getCalidad(id1).getSolido()))*100;
+        float relacion = ((float) (calserv.getCalidad(id2).getSolido())/(float) (calserv.getCalidad(id1).getSolido()))*100;
         return (int) (100 - relacion);
     }
 

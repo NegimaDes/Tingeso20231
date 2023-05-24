@@ -21,6 +21,9 @@
 			src/main/java/tintin/tingeso2023/repositories/,
 			src/main/java/tintin/tingeso2023/models/*
 		</sonar.exclusions>
+		<sonar.inclusions>
+			src/main/java/tintin/tingeso2023/services/*.java
+		</sonar.inclusions>
 	</properties>
 	<dependencies>
 		<dependency>

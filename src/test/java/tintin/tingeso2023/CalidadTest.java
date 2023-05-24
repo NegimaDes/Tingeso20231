@@ -15,7 +15,7 @@ import tintin.tingeso2023.services.ProveedorService;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class CalidadTest {
+class CalidadTest {
 
     @Autowired
     CalidadService serv;
