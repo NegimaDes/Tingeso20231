@@ -15,6 +15,7 @@ public class AcopioAcumEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_acopio_acum")
     private Integer idacopio;
 
     @ManyToOne

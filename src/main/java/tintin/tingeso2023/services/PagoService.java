@@ -1,5 +1,6 @@
 package tintin.tingeso2023.services;
 
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tintin.tingeso2023.entities.AcopioAcumEntity;
@@ -52,11 +53,15 @@ public class PagoService {
     @Autowired
     ProveedorService proserv;
 
-    public void save(PagoEntity pago){
-        repo.save(pago);
+    public PagoEntity save(PagoEntity pago){
+        return repo.save(pago);
     }
 
-    public void preSave(PagoEntity pago){
+    public void delete(PagoEntity pago){
+        repo.delete(pago);
+    }
+
+    public PagoEntity preSave(PagoEntity pago){
         if(pago.getTotal() > 950000){
             pago.setVfinal((int) (pago.getTotal() *(1-RETENCION)));
             pago.setRetencion((int) (pago.getTotal() * RETENCION));
@@ -66,27 +71,28 @@ public class PagoService {
             pago.setRetencion(0);
             proserv.retencion(pago.getAcopio().getCodigo().getCodigo(), false);
         }
-        save(pago);
+        return save(pago);
     }
     
-    public void calcularYGuardar(PagoEntity pago){
+    public PagoEntity calcularYGuardar(PagoEntity pago){
         Integer pagoacopio = pago.getPleche() + pago.getPgrasa() + pago.getPsolidos() + pago.getPleche()*pago.getBonificacion();
         pago.setDvarl(pagoacopio * getVariacionKLS(pago.getVarl()));
         pago.setDvarg(pagoacopio * getVariacionGrasa(pago.getVarg()));
         pago.setDvars(pagoacopio * getVariacionSolidos(pago.getVars()));
         Integer descuentototal = pago.getDvarl() + pago.getDvarg() + pago.getDvars();
         pago.setTotal(pagoacopio - descuentototal);
-        preSave(pago);
+        return preSave(pago);
     }
 
-    public void calcularPagos(Integer[] fecha){
+    public PagoEntity calcularPagos(Integer[] fecha){
         List<AcopioAcumEntity> porpagar = acoserv.sinPagos(fecha);
         for(AcopioAcumEntity calculando:porpagar){
-            datos(calculando);
+            return datos(calculando);
         }
+        return null;
     }
 
-    public void datos(AcopioAcumEntity calculando){
+    public PagoEntity datos(AcopioAcumEntity calculando){
         PagoEntity pago = new PagoEntity();
         pago.setAcopio(calculando);
         pago.setPleche(getPagoCat(calculando) * calculando.getTotalkls());
@@ -96,7 +102,7 @@ public class PagoService {
         pago.setVarl(diferenciaKLS(calculando));
         pago.setVarg(diferenciaGrasa(calculando));
         pago.setVars(diferenciaSolidos(calculando));
-        calcularYGuardar(pago);
+        return calcularYGuardar(pago);
     }
 
     public Integer getPagoCat(AcopioAcumEntity acopio){
@@ -148,6 +154,7 @@ public class PagoService {
         return 0;
     }
 
+    @Generated
     public Integer diferenciaKLS(AcopioAcumEntity acopio){
         AcopioAcumEntity previo = acoserv.getPrevio(acopio);
         if(previo == null){
@@ -157,6 +164,7 @@ public class PagoService {
         return (int) (100 - relacion);
     }
 
+    @Generated
     public Integer getVariacionKLS(Integer diferencia){
         if(diferencia <= 8){
             return 0;
@@ -169,6 +177,7 @@ public class PagoService {
         }
     }
 
+    @Generated
     public Integer diferenciaGrasa(AcopioAcumEntity acopio){
         AcopioAcumEntity previo = acoserv.getPrevio(acopio);
         if(previo == null){
@@ -180,6 +189,7 @@ public class PagoService {
         return (int) (100 - relacion);
     }
 
+    @Generated
     public Integer getVariacionGrasa(Integer diferencia){
         if(diferencia <= 8){
             return 0;
@@ -192,6 +202,7 @@ public class PagoService {
         }
     }
 
+    @Generated
     public Integer diferenciaSolidos(AcopioAcumEntity acopio){
         AcopioAcumEntity previo = acoserv.getPrevio(acopio);
         if(previo == null){
@@ -203,6 +214,7 @@ public class PagoService {
         return (int) (100 - relacion);
     }
 
+    @Generated
     public Integer getVariacionSolidos(Integer diferencia){
         if(diferencia <= 8){
             return 0;
@@ -215,6 +227,7 @@ public class PagoService {
         }
     }
 
+    @Generated
     public List<DatosPagos> getAllData(){
         Iterable<PagoEntity> pagos = repo.findAll();
         List<DatosPagos> datos = new ArrayList<>();

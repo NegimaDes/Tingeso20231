@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tintin.tingeso2023.entities.ProveedorEntity;
 import tintin.tingeso2023.services.ProveedorService;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ProveedorTest {
@@ -94,6 +94,51 @@ class ProveedorTest {
         temp.setNombre("Nombre");
         temp.setRetencion(false);
 
+        String mensaje = serv.manejarDatos(temp);
 
+        assertEquals("proveedor guardado", mensaje);
+
+        serv.delete(20001);
+    }
+
+    @Test
+    void testmanejardatos2(){
+        ProveedorEntity temp = new ProveedorEntity();
+        temp.setCategoria("A");
+        temp.setCodigo(20001);
+        temp.setNombre("Nombre");
+        temp.setRetencion(false);
+
+        ProveedorEntity temp2 = new ProveedorEntity();
+        temp2.setCategoria("A");
+        temp2.setCodigo(20001);
+        temp2.setNombre("Nombre");
+        temp2.setRetencion(false);
+
+        serv.save(temp);
+
+        String mensaje = serv.manejarDatos(temp2);
+
+        assertEquals("Siguiente codigo posible para la region es 20002", mensaje);
+
+        serv.delete(20001);
+    }
+
+    @Test
+    void testretencion(){
+        ProveedorEntity temp = new ProveedorEntity();
+        temp.setCategoria("A");
+        temp.setCodigo(20001);
+        temp.setNombre("Nombre");
+        temp.setRetencion(false);
+        serv.save(temp);
+
+        serv.retencion(20001, true);
+
+        boolean retencion = serv.obtenerProveedor(20001).getRetencion();
+
+        assertTrue(retencion);
+
+        serv.delete(20001);
     }
 }

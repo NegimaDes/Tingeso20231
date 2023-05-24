@@ -59,6 +59,7 @@ public class ProveedorService {
         return codigo - (codigo%1000) +1;
     }
 
+    @Generated
     Integer max(Integer num1, Integer num2){
         if(num1 > num2)
             return num1;

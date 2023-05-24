@@ -1,5 +1,6 @@
 package tintin.tingeso2023.services;
 
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,21 +28,26 @@ public class CalidadService {
         return repo.save(nuevo);
     }
 
-    public void createAndSave(AcopioAcumEntity acopio, Integer grasa, Integer solidos){
+    public void delete(CalidadEntity calidad){
+        repo.delete(calidad);
+    }
+    public CalidadEntity createAndSave(AcopioAcumEntity acopio, Integer grasa, Integer solidos){
         CalidadEntity nuevo = new CalidadEntity();
         nuevo.setAcopio(acopio);
         nuevo.setGrasa(grasa);
         nuevo.setSolido(solidos);
-        save(nuevo);
+        return save(nuevo);
     }
 
-    public void saveHandler(Integer codigo, Integer grasa, Integer solidos, Integer[] fecha){
+    public CalidadEntity saveHandler(Integer codigo, Integer grasa, Integer solidos, Integer[] fecha){
         AcopioAcumEntity acopio = servacop.findAcopio(codigo, fecha[0], fecha[1], fecha[2]);
         if(acopio != null){
-            createAndSave(acopio, grasa, solidos);
+            return createAndSave(acopio, grasa, solidos);
         }
+        return null;
     }
 
+    @Generated
     public void readDoc(MultipartFile doc, Integer[] fecha){
         String line;
         BufferedReader br;
@@ -58,6 +64,7 @@ public class CalidadService {
         }
     }
 
+    @Generated
     public void readLine(String line, Integer[] fecha){
         String[] arr = line.split(",");
         Integer codigo = Integer.parseInt(arr[0]);
@@ -65,6 +72,7 @@ public class CalidadService {
         Integer solidos = Integer.parseInt(arr[2]);
         saveHandler(codigo, grasa, solidos, fecha);
     }
+
 
     public CalidadEntity getCalidad(Integer idacopio){
         Iterable<CalidadEntity> all = repo.findAll();

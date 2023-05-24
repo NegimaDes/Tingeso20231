@@ -15,6 +15,7 @@ public class CalidadEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_calidad")
     private Integer idcalidad;
 
     @OneToOne

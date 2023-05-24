@@ -21,4 +21,8 @@ public class ProveedorEntity {
     private String categoria;
 
     private boolean retencion;
+
+    public boolean getRetencion(){
+        return this.retencion;
+    }
 }

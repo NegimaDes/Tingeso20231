@@ -1,5 +1,6 @@
 package tintin.tingeso2023.services;
 
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,10 @@ public class AcopioService {
 
     public AcopioAcumEntity save(AcopioAcumEntity acopio){
         return repo.save(acopio);
+    }
+
+    public void delete(AcopioAcumEntity acopio){
+        repo.delete(acopio);
     }
 
     public void createAndSave(String codigo, String kls, String turno, Integer anno, Integer mes, Integer quincena){
@@ -92,6 +97,7 @@ public class AcopioService {
         return Objects.equals(acopio.getAnno(), anno) && Objects.equals(acopio.getMes(), mes) && Objects.equals(acopio.getQuincena(), quincena);
     }
 
+    @Generated
     public Integer[] readDoc(MultipartFile doc){
         String line;
         BufferedReader br;
@@ -110,6 +116,7 @@ public class AcopioService {
         return fecha;
     }
 
+    @Generated
     public Integer[] readLine(String line){
         String[] arr = line.split(",");
         Integer[] fecha = getListDate(arr[0]);
@@ -123,6 +130,7 @@ public class AcopioService {
         return fecharespuesta;
     }
 
+
     public Integer[] getListDate(String fecha){
         String[] arr = fecha.split("/");
         int anno = Integer.parseInt(arr[2]);
@@ -131,6 +139,7 @@ public class AcopioService {
         return new Integer[]{mes, dia, anno};
     }
 
+    @Generated
     public List<AcopioAcumEntity> sinPagos(Integer[] fecha){
         Iterable<AcopioAcumEntity> all = repo.findAll();
         List<AcopioAcumEntity> porpagar = new ArrayList<>();
@@ -142,6 +151,7 @@ public class AcopioService {
         return porpagar;
     }
 
+    @Generated
     public AcopioAcumEntity getPrevio(AcopioAcumEntity actual){
         Iterable<AcopioAcumEntity> all = repo.findAll();
         for(AcopioAcumEntity previo:all){
@@ -151,6 +161,7 @@ public class AcopioService {
         }
         return null;
     }
+
 
     public boolean esPrevio(AcopioAcumEntity actual, AcopioAcumEntity previo){
         if(actual.getQuincena() == 1){
