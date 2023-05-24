@@ -1,4 +1,4 @@
-package tintin.tingeso2023.Entities;
+package tintin.tingeso2023.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,13 +15,13 @@ public class AcopioAcumEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_acopio_acum;
+    private Integer idacopio;
 
     @ManyToOne
     @JoinColumn(name = "codigo")
     private ProveedorEntity codigo;
 
-    private Integer total_kls;
+    private Integer totalkls;
 
     private Integer manana;
 

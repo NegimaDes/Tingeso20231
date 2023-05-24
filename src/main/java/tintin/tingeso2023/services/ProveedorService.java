@@ -1,10 +1,10 @@
-package tintin.tingeso2023.Services;
+package tintin.tingeso2023.services;
 
 import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tintin.tingeso2023.Entities.ProveedorEntity;
-import tintin.tingeso2023.Repositories.ProveedorRepository;
+import tintin.tingeso2023.entities.ProveedorEntity;
+import tintin.tingeso2023.repositories.ProveedorRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,15 +16,15 @@ public class ProveedorService {
     ProveedorRepository repo;
 
     //Guardado de un nuevo proveedor al sistema
-    public ProveedorEntity save(ProveedorEntity new_prov){return repo.save(new_prov);}
+    public ProveedorEntity save(ProveedorEntity newprov){return repo.save(newprov);}
 
-    public String manejarDatos(ProveedorEntity new_prov){
+    public String manejarDatos(ProveedorEntity newprov){
         String mensaje = "";
-        if(codigoCorrecto(new_prov.getCodigo())){
-            save(new_prov);
+        if(codigoCorrecto(newprov.getCodigo())){
+            save(newprov);
             mensaje = "proveedor guardado";
         }else{
-            mensaje = "Siguiente codigo posible para la region es " + nextCode(new_prov.getCodigo());
+            mensaje = "Siguiente codigo posible para la region es " + nextCode(newprov.getCodigo());
         }
         return mensaje;
     }

@@ -1,17 +1,15 @@
-package tintin.tingeso2023.Services;
+package tintin.tingeso2023.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tintin.tingeso2023.Entities.AcopioAcumEntity;
-import tintin.tingeso2023.Entities.ProveedorEntity;
-import tintin.tingeso2023.Repositories.AcopioAcumRepository;
-import tintin.tingeso2023.Repositories.ProveedorRepository;
+import tintin.tingeso2023.entities.AcopioAcumEntity;
+import tintin.tingeso2023.entities.ProveedorEntity;
+import tintin.tingeso2023.repositories.AcopioAcumRepository;
+import tintin.tingeso2023.repositories.ProveedorRepository;
 
 import java.io.*;
 import java.util.*;
-
-import static org.thymeleaf.util.StringUtils.length;
 
 @Service
 public class AcopioService {
@@ -34,7 +32,7 @@ public class AcopioService {
         ProveedorEntity proveedor = repoprov.findById(Integer.parseInt(codigo)).orElse(null);
         if(proveedor != null){
             nuevo.setCodigo(proveedor);
-            nuevo.setTotal_kls(Integer.parseInt(kls));
+            nuevo.setTotalkls(Integer.parseInt(kls));
             nuevo.setAnno(anno);
             nuevo.setMes(mes);
             nuevo.setQuincena(quincena);
@@ -46,7 +44,7 @@ public class AcopioService {
 
     public void saveHandler(AcopioAcumEntity acopio, Integer anno, Integer mes, Integer quincena, String turno, String kls, String proveedor){
         if(acopio != null){
-            acopio.setTotal_kls(acopio.getTotal_kls() + Integer.parseInt(kls));
+            acopio.setTotalkls(acopio.getTotalkls() + Integer.parseInt(kls));
             acopio = addTurno(acopio, turno);
             save(acopio);
         }else{
@@ -101,7 +99,7 @@ public class AcopioService {
         try{
             InputStream is = doc.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
-            br.readLine();
+            line = br.readLine();
             while ((line = br.readLine()) != null){
                 fecha = readLine(line);
             }
@@ -147,10 +145,8 @@ public class AcopioService {
     public AcopioAcumEntity getPrevio(AcopioAcumEntity actual){
         Iterable<AcopioAcumEntity> all = repo.findAll();
         for(AcopioAcumEntity previo:all){
-            if(Objects.equals(actual.getCodigo().getCodigo(), previo.getCodigo().getCodigo())){
-                if(esPrevio(actual, previo)){
+            if(Objects.equals(actual.getCodigo().getCodigo(), previo.getCodigo().getCodigo()) && esPrevio(actual, previo)){
                     return previo;
-                }
             }
         }
         return null;

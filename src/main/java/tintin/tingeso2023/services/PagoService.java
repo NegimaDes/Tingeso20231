@@ -1,13 +1,12 @@
-package tintin.tingeso2023.Services;
+package tintin.tingeso2023.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tintin.tingeso2023.Entities.AcopioAcumEntity;
-import tintin.tingeso2023.Entities.CalidadEntity;
-import tintin.tingeso2023.Entities.PagoEntity;
-import tintin.tingeso2023.Entities.ProveedorEntity;
-import tintin.tingeso2023.Models.DatosPagos;
-import tintin.tingeso2023.Repositories.PagoRepository;
+import tintin.tingeso2023.entities.AcopioAcumEntity;
+import tintin.tingeso2023.entities.CalidadEntity;
+import tintin.tingeso2023.entities.PagoEntity;
+import tintin.tingeso2023.models.DatosPagos;
+import tintin.tingeso2023.repositories.PagoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +58,11 @@ public class PagoService {
 
     public void preSave(PagoEntity pago){
         if(pago.getTotal() > 950000){
-            pago.setV_final((int) (pago.getTotal() *(1-RETENCION)));
+            pago.setVfinal((int) (pago.getTotal() *(1-RETENCION)));
             pago.setRetencion((int) (pago.getTotal() * RETENCION));
             proserv.retencion(pago.getAcopio().getCodigo().getCodigo(), true);
         }else{
-            pago.setV_final(pago.getTotal());
+            pago.setVfinal(pago.getTotal());
             pago.setRetencion(0);
             proserv.retencion(pago.getAcopio().getCodigo().getCodigo(), false);
         }
@@ -90,9 +89,9 @@ public class PagoService {
     public void datos(AcopioAcumEntity calculando){
         PagoEntity pago = new PagoEntity();
         pago.setAcopio(calculando);
-        pago.setPleche(getPagoCat(calculando) * calculando.getTotal_kls());
-        pago.setPgrasa(getPagoGrasa(calculando) * calculando.getTotal_kls());
-        pago.setPsolidos(getPagoSolidos(calculando) * calculando.getTotal_kls());
+        pago.setPleche(getPagoCat(calculando) * calculando.getTotalkls());
+        pago.setPgrasa(getPagoGrasa(calculando) * calculando.getTotalkls());
+        pago.setPsolidos(getPagoSolidos(calculando) * calculando.getTotalkls());
         pago.setBonificacion(getBonificacionFrecuencia(calculando));
         pago.setVarl(diferenciaKLS(calculando));
         pago.setVarg(diferenciaGrasa(calculando));
@@ -114,7 +113,7 @@ public class PagoService {
     }
 
     public Integer getPagoGrasa(AcopioAcumEntity acopio){
-        CalidadEntity calidad = calserv.getCalidad(acopio.getId_acopio_acum());
+        CalidadEntity calidad = calserv.getCalidad(acopio.getIdacopio());
         if(calidad.getGrasa() <= 20){
             return GRASA_BAJA;
         }else if(calidad.getGrasa() <= 45){
@@ -125,7 +124,7 @@ public class PagoService {
     }
 
     public Integer getPagoSolidos(AcopioAcumEntity acopio){
-        CalidadEntity calidad = calserv.getCalidad(acopio.getId_acopio_acum());
+        CalidadEntity calidad = calserv.getCalidad(acopio.getIdacopio());
         if(calidad.getSolido() <= 7){
             return SOL_BAJO;
         }else if(calidad.getSolido() <= 18){
@@ -154,7 +153,7 @@ public class PagoService {
         if(previo == null){
             return 0;
         }
-        float relacion = ((float) (acopio.getTotal_kls()/previo.getTotal_kls()))*100;
+        float relacion = ((float) (acopio.getTotalkls()/previo.getTotalkls()))*100;
         return (int) (100 - relacion);
     }
 
@@ -175,8 +174,8 @@ public class PagoService {
         if(previo == null){
             return 0;
         }
-        Integer id1 = previo.getId_acopio_acum();
-        Integer id2 = acopio.getId_acopio_acum();
+        Integer id1 = previo.getIdacopio();
+        Integer id2 = acopio.getIdacopio();
         float relacion = ((float) (calserv.getCalidad(id2).getGrasa()/calserv.getCalidad(id1).getGrasa()))*100;
         return (int) (100 - relacion);
     }
@@ -198,8 +197,8 @@ public class PagoService {
         if(previo == null){
             return 0;
         }
-        Integer id1 = previo.getId_acopio_acum();
-        Integer id2 = acopio.getId_acopio_acum();
+        Integer id1 = previo.getIdacopio();
+        Integer id2 = acopio.getIdacopio();
         float relacion = ((float) (calserv.getCalidad(id2).getSolido()/calserv.getCalidad(id1).getSolido()))*100;
         return (int) (100 - relacion);
     }
@@ -224,11 +223,11 @@ public class PagoService {
             datopago.setQuincena(quincenaToString(pago));
             datopago.setCodigo(pago.getAcopio().getCodigo().getCodigo());
             datopago.setNombre(pago.getAcopio().getCodigo().getNombre());
-            datopago.setKls(pago.getAcopio().getTotal_kls());
+            datopago.setKls(pago.getAcopio().getTotalkls());
             datopago.setDiasenvio(pago.getAcopio().getTarde() + pago.getAcopio().getManana());
             datopago.setPromdiario((float) datopago.getKls() /datopago.getDiasenvio());
-            datopago.setGrasa(calserv.getCalidad(pago.getAcopio().getId_acopio_acum()).getGrasa());
-            datopago.setSolidos(calserv.getCalidad(pago.getAcopio().getId_acopio_acum()).getSolido());
+            datopago.setGrasa(calserv.getCalidad(pago.getAcopio().getIdacopio()).getGrasa());
+            datopago.setSolidos(calserv.getCalidad(pago.getAcopio().getIdacopio()).getSolido());
             datopago.setVarl(pago.getVarl());
             datopago.setVarg(pago.getVarg());
             datopago.setVars(pago.getVars());
@@ -241,7 +240,7 @@ public class PagoService {
             datopago.setDvars(pago.getDvars());
             datopago.setTotal(pago.getTotal());
             datopago.setRetencion(pago.getRetencion());
-            datopago.setMfinal(pago.getV_final());
+            datopago.setMfinal(pago.getVfinal());
             datos.add(datopago);
         }
         return datos;

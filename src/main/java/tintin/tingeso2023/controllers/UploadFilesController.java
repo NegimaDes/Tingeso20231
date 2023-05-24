@@ -1,4 +1,4 @@
-package tintin.tingeso2023.Controllers;
+package tintin.tingeso2023.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import tintin.tingeso2023.Services.AcopioService;
-import tintin.tingeso2023.Services.CalidadService;
-import tintin.tingeso2023.Services.PagoService;
+import tintin.tingeso2023.services.AcopioService;
+import tintin.tingeso2023.services.CalidadService;
+import tintin.tingeso2023.services.PagoService;
 
 @Controller
 @RequestMapping

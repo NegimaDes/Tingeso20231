@@ -1,4 +1,4 @@
-package tintin.tingeso2023.Models;
+package tintin.tingeso2023.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

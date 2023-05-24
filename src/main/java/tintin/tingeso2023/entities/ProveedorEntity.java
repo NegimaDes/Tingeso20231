@@ -1,4 +1,4 @@
-package tintin.tingeso2023.Entities;
+package tintin.tingeso2023.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

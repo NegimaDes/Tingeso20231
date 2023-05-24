@@ -1,4 +1,4 @@
-package tintin.tingeso2023.Controllers;
+package tintin.tingeso2023.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import tintin.tingeso2023.Entities.ProveedorEntity;
-import tintin.tingeso2023.Services.ProveedorService;
+import tintin.tingeso2023.entities.ProveedorEntity;
+import tintin.tingeso2023.services.ProveedorService;
 
 import java.util.Objects;
 

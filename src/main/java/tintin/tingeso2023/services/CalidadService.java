@@ -1,12 +1,11 @@
-package tintin.tingeso2023.Services;
+package tintin.tingeso2023.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tintin.tingeso2023.Entities.AcopioAcumEntity;
-import tintin.tingeso2023.Entities.CalidadEntity;
-import tintin.tingeso2023.Repositories.AcopioAcumRepository;
-import tintin.tingeso2023.Repositories.CalidadRepository;
+import tintin.tingeso2023.entities.AcopioAcumEntity;
+import tintin.tingeso2023.entities.CalidadEntity;
+import tintin.tingeso2023.repositories.CalidadRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,15 +43,13 @@ public class CalidadService {
     }
 
     public void readDoc(MultipartFile doc, Integer[] fecha){
-        System.out.println("Se comienza a leer calidad, fecha: " + Arrays.toString(fecha));
         String line;
         BufferedReader br;
         try{
             InputStream is = doc.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
-            br.readLine();
+            line = br.readLine();
             while ((line = br.readLine()) != null){
-                System.out.println("linea leida: " + line);
                 readLine(line, fecha);
             }
             is.close();
@@ -72,7 +69,7 @@ public class CalidadService {
     public CalidadEntity getCalidad(Integer idacopio){
         Iterable<CalidadEntity> all = repo.findAll();
         for(CalidadEntity revisando:all){
-            if(Objects.equals(revisando.getAcopio().getId_acopio_acum(), idacopio)){
+            if(Objects.equals(revisando.getAcopio().getIdacopio(), idacopio)){
                 return revisando;
             }
         }

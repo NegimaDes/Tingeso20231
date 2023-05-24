@@ -1,4 +1,4 @@
-package tintin.tingeso2023.Entities;
+package tintin.tingeso2023.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class CalidadEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_calidad;
+    private Integer idcalidad;
 
     @OneToOne
     @JoinColumn(name = "id_acopio_acum")

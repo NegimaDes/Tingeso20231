@@ -16,9 +16,10 @@
 	<properties>
 		<java.version>17</java.version>
 		<sonar.exclusions>
-			src/main/java/com/tintin/tingeso2023/entities/,
-			src/main/java/com/tintin/tingeso2023/controllers/,
-			src/main/java/com/tintin/tingeso2023/repositories/*
+			src/main/java/tintin/tingeso2023/entities/,
+			src/main/java/tintin/tingeso2023/controllers/,
+			src/main/java/tintin/tingeso2023/repositories/,
+			src/main/java/tintin/tingeso2023/models/*
 		</sonar.exclusions>
 	</properties>
 	<dependencies>
