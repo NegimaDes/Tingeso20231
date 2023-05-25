@@ -11,8 +11,6 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - app1
-      - app2
-      - app3
 
   postgres-db:
     image: postgres:latest
