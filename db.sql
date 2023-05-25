@@ -79,7 +79,6 @@ ALTER TABLE public.proveedor OWNER TO postgres;
 ALTER TABLE ONLY public.acopio_acum
     ADD CONSTRAINT acopio_acum_pkey PRIMARY KEY (id_acopio_acum);
 
-
 ALTER TABLE ONLY public.calidad
     ADD CONSTRAINT calidad_pkey PRIMARY KEY (id_calidad);
 
